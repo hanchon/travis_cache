@@ -1,7 +1,7 @@
 language: cpp
 git:
   submodules: false
-  
+
 matrix:
   include:
     # gcc-5
@@ -26,16 +26,16 @@ branches:
     - master
 
 before_install:
-  # Update submodules 
+  # Update submodules
   - git submodule update --init --recursive
 
   - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
   - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
-  
+
   - if [ -n "$GCC_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
   - if [ -n "$CLANG_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
-  
-  install:
+
+install:
   ############################################################################
   # All the dependencies are installed in ${TRAVIS_BUILD_DIR}/deps/
   ############################################################################
@@ -51,7 +51,7 @@ before_install:
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     fi
-   
+
   - |
     if [ ! -d "$HOME/boost/lib" ]; then
       wget -O boost.tar.gz https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz/download
@@ -59,14 +59,14 @@ before_install:
       cd boost_1_61_0
       ./bootstrap.sh --prefix=$HOME/boost
       ./b2 #--toolset="gcc-${GCC_VERSION}"
-      sudo ./b2 install 
+      sudo ./b2 install
       cd ..
     else
       echo 'Using cached directory for boost.';
       ls -A $HOME/boost
       ldconfig -n /home/travis/protobuf/lib
     fi
-    
+
   ############################################################################
   # secp256k1
   ############################################################################
@@ -85,7 +85,7 @@ before_install:
   ############################################################################
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
+      sudo ldconfig
     fi
   ############################################################################
   # bitprim-core
@@ -105,16 +105,13 @@ before_install:
   ############################################################################
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi  
-install:
-  ############################################################################
-  # All the dependencies are installed in ${TRAVIS_BUILD_DIR}/deps/
-  ############################################################################
+      sudo ldconfig
+    fi
+
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
   - echo "install"
-  
+
 before_script:
   ############################################################################
   # Set the git identity (for pushing the documentation and the benchmarks)
@@ -131,4 +128,3 @@ before_script:
 script:
   - echo "script"
   - ls -A $HOME/boost
-  
