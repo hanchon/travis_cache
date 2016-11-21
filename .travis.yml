@@ -32,7 +32,9 @@ before_install:
   - if [ -n "$GCC_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
   - if [ -n "$CLANG_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
   
-  - echo "hola cache" >> ~/.ccache/test
+  #- echo "hola cache" >> ~/.ccache/test
+  - cat ~/.ccache/test
+  - ls ~/.ccache/
   
 install:
   ############################################################################
