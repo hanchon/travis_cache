@@ -1,6 +1,7 @@
 language: cpp
 git:
   submodules: false
+  cache: ccache
   
 matrix:
   include:
@@ -16,36 +17,6 @@ matrix:
             - g++-5
           sources:
             - ubuntu-toolchain-r-test
-            
-    # gcc-6
-    - env: GCC_VERSION=6 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-      os: linux
-      sudo: required
-      dist: trusty
-      addons: &gcc6
-        apt:
-          packages:
-            - cmake
-            - g++-6
-          sources:
-            - ubuntu-toolchain-r-test
-            
-    # Xcode 8 Release
-    - env: CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode8
-      addons: &xcode8
-      sudo: requiered
-      
-    # Xcode 7.3 Release
-    - env: CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode73
-      addons: &xcode73
-      sudo: requiered
-      
-            
-
 branches:
   only:
     - master
@@ -55,21 +26,14 @@ before_install:
   # Update submodules 
   - git submodule update --init --recursive
 
-  # protobuf prerequisites
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo apt-get install -y autoconf automake libtool curl make unzip
-    fi
   - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
   - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
   
   - if [ -n "$GCC_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
   - if [ -n "$CLANG_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
   
-  - cmake --version
-  - echo "g++-${GCC_VERSION}"
-  # - if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then brew install cmake; fi
-
+  - echo "hola cache" >> ~/.ccache/test
+  
 install:
   ############################################################################
   # All the dependencies are installed in ${TRAVIS_BUILD_DIR}/deps/
@@ -77,206 +41,6 @@ install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
 
-  ############################################################################
-  # Install a recent CMake
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      CMAKE_URL="https://cmake.org/files/v3.7/cmake-3.7.0-rc3-Linux-x86_64.tar.gz"
-      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-    fi
-    
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      #osx>7 already has cmake 3.6
-      brew unlink cmake
-      brew install cmake
-    fi
-    
-  - cmake --version
-    
-  # Install boost 1.58+
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      wget -O boost.tar.gz https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz/download
-      tar -xzf boost.tar.gz
-      cd boost_1_61_0
-      ./bootstrap.sh --prefix=/usr/local 
-      ./b2 #--toolset="gcc-${GCC_VERSION}"
-      sudo ./b2 install 
-      cd ..
-    fi
-    #boost 1.60 already installed in osx
-    #brew install boost
-  ############################################################################
-  # Install Boost
-  ############################################################################  
-  
-  #- sudo apt-get -y install libboost-{chrono,program-options,date-time,thread,system,filesystem,regex,serialization,iostreams,locale}1.58{-dev,.0}
-    
-  ############################################################################
-  # Install ZeroMQ
-  ############################################################################    
-  - wget https://github.com/zeromq/libzmq/releases/download/v4.2.0/zeromq-4.2.0.tar.gz
-  - tar -xzvf zeromq-4.2.0.tar.gz
-  - cd zeromq-4.2.0
-  - sudo ./autogen.sh
-  - sudo ./configure #--prefix=/usr 
-  - sudo make --silent 
-  - sudo make install --silent
-  - cd ..
-  ############################################################################
-  # Install protobuf
-  ############################################################################
-  - wget https://github.com/google/protobuf/releases/download/v3.1.0/protobuf-cpp-3.1.0.tar.gz
-  - tar -xzvf protobuf-cpp-3.1.0.tar.gz
-  - cd protobuf-3.1.0
-  - sudo ./configure #--prefix=/usr 
-  - sudo make --silent
-  - sudo make install --silent
-  - cd ..
-  ############################################################################
-  # Ldconfig only in linux
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi
-  
-  ############################################################################
-  # secp256k1
-  ############################################################################
-  - git clone https://github.com/bitprim/secp256k1.git
-  - cd secp256k1
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DWITH_EXAMPLES=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
-  - make -j2 --silent
-  - sudo make install --silent
-  - cd ..
-  - cd ..
-
-  ############################################################################
-  # set libraries
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi
-  ############################################################################
-  # bitprim-core
-  ############################################################################
-  - git clone https://github.com/bitprim/bitprim-core.git
-  - cd bitprim-core
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DWITH_EXAMPLES=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
-  - make -j2 --silent
-  - sudo make install --silent
-  - cd ..
-  - cd ..
-
-  ############################################################################
-  # set libraries
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi
-  ############################################################################
-  # bitprim-consensus
-  ############################################################################
-  - git clone https://github.com/bitprim/bitprim-consensus.git
-  - cd bitprim-consensus
-  - mkdir build
-  - cd build
-  - cmake .. -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
-  - make -j2 --silent
-  - sudo make install --silent
-  - cd ..
-  - cd ..
- 
-  ############################################################################
-  # set libraries
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi
-  ############################################################################
-  # bitprim-database
-  ############################################################################
-  - git clone https://github.com/bitprim/bitprim-database.git
-  - cd bitprim-database
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DWITH_EXAMPLES=OFF -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
-  - make -j2 --silent
-  - sudo make install --silent
-  - cd ..
-  - cd ..
-
-  ############################################################################
-  # set libraries
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi
-  ############################################################################
-  # bitprim-blockchain
-  ############################################################################
-  - git clone https://github.com/bitprim/bitprim-blockchain.git
-  - cd bitprim-blockchain
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DWITH_EXAMPLES=OFF -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
-  - make -j2 --silent
-  - sudo make install --silent
-  - cd ..
-  - cd ..
-
-  ############################################################################
-  # set libraries
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi
-  ############################################################################
-  # bitprim-network
-  ############################################################################
-  - git clone https://github.com/bitprim/bitprim-network.git
-  - cd bitprim-network
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
-  - make -j2 --silent
-  - sudo make install --silent
-  - cd ..
-  - cd ..
-
-  ############################################################################
-  # set libraries
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      sudo ldconfig      
-    fi
-    
-  ############################################################################
-  # bitprim-node
-  ############################################################################
-  - git clone https://github.com/bitprim/bitprim-node.git
-  - cd bitprim-node
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
-  - make -j2 --silent
-  - sudo make install --silent
-  - cd ..
-  - cd ..
   
 before_script:
   ############################################################################
@@ -288,13 +52,7 @@ before_script:
   - if [ -n "$GCC_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
   - if [ -n "$CLANG_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
 
-
   - cd ${TRAVIS_BUILD_DIR}
-  #- mkdir build 
-  #- cd build 
-  #- cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
+
 
 script:
-
-  #- make -j2 
-  #- sudo make install
