@@ -66,9 +66,7 @@ install:
       ls -A $HOME/boost
       ldconfig -n /home/travis/protobuf/lib
     fi
-
-  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
+    
   - echo "install"
 
 before_script:
