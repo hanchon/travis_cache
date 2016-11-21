@@ -72,7 +72,7 @@ before_script:
   - echo "before_script"
 
 script:
-  - echo "hola cache" >> $HOME/.ccache/test;
+  #- echo "hola cache" >> $HOME/.ccache/test;
   - ls $HOME/.ccache
   - echo "script"
   - ls -A $HOME/protobuf
