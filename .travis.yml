@@ -66,6 +66,7 @@ install:
       export BOOST_ROOT="/home/travis/boost"
       export BOOST_INCLUDE="/home/travis/boost/include"
       export BOOST_LIBDIR="/home/travis/boost/lib"
+      export BOOST_OPTS = "-DBOOST_ROOT=${BOOST_ROOT} -DBOOST_INCLUDEDIR=${BOOST_INCLUDE} -DBOOST_LIBRARYDIR=${BOOST_LIBDIR}
       ls -A $HOME/boost
       #ldconfig -n /home/travis/boost
       #ldconfig -n /home/travis/boost/lib
@@ -101,7 +102,7 @@ install:
   - cd bitprim-core
   - mkdir build
   - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DWITH_EXAMPLES=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
+  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DWITH_EXAMPLES=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" "${BOOST_OPTS}"
   - make -j2 --silent
   - sudo make install --silent
   - cd ..
