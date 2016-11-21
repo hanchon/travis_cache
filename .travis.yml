@@ -5,7 +5,7 @@ git:
 matrix:
   include:
     # gcc-5
-    - env: GCC_VERSION=5 CXX_FLAGS="-std=c++11 -isystem=/home/travis/boost/include" BUILD_TYPE=Debug
+    - env: GCC_VERSION=5 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
       os: linux
       sudo: required
       dist: trusty
@@ -64,10 +64,9 @@ install:
     else
       echo 'Using cached directory for boost.';
       export BOOST_ROOT="/home/travis/boost"
-      #export BOOST_INCLUDE="/home/travis/boost/include"
+      export BOOST_INCLUDE="/home/travis/boost/include"
       export BOOST_LIBDIR="/home/travis/boost/lib"
-      #export BOOST_OPTS = "-DBOOST_ROOT=${BOOST_ROOT} -DBOOST_INCLUDEDIR=${BOOST_INCLUDE} -DBOOST_LIBRARYDIR=${BOOST_LIBDIR}"
-      export BOOST_OPTS = "-DBOOST_ROOT=${BOOST_ROOT} -DBOOST_LIBRARYDIR=${BOOST_LIBDIR}"
+      export BOOST_OPTS = "-DBOOST_ROOT=${BOOST_ROOT} -DBOOST_INCLUDEDIR=${BOOST_INCLUDE} -DBOOST_LIBRARYDIR=${BOOST_LIBDIR}"
       ls -A $HOME/boost
       #ldconfig -n /home/travis/boost
       #ldconfig -n /home/travis/boost/lib
