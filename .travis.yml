@@ -2,6 +2,7 @@ language: cpp
 git:
   submodules: false
   cache:
+    ccache: true
     directories:
     - $HOME/protobuf
   
@@ -37,13 +38,13 @@ before_install:
   # check to see if protobuf folder is empty
   - |
     if [ ! -d "$HOME/protobuf/lib" ]; then
-      wget https://github.com/google/protobuf/releases/download/v3.1.0/protobuf-cpp-3.1.0.tar.gz
-      tar -xzvf protobuf-cpp-3.1.0.tar.gz
-      cd protobuf-3.1.0
-      sudo ./configure --prefix=$HOME/protobuf 
-      sudo make --silent
-      sudo make install --silent
-      cd ..
+      #wget https://github.com/google/protobuf/releases/download/v3.1.0/protobuf-cpp-3.1.0.tar.gz
+      #tar -xzvf protobuf-cpp-3.1.0.tar.gz
+      #cd protobuf-3.1.0
+      #sudo ./configure --prefix=$HOME/protobuf 
+      #sudo make --silent
+      #sudo make install --silent
+      #cd ..
     else
       echo 'Using cached directory.';
       ls -A $HOME/protobuf
@@ -71,4 +72,7 @@ before_script:
   - echo "before_script"
 
 script:
+  - echo "hola cache" >> $HOME/.ccache/test;
+  - ls $HOME/.ccache
   - echo "script"
+  - ls -A $HOME/protobuf
