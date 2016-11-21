@@ -63,8 +63,11 @@ install:
       cd ..
     else
       echo 'Using cached directory for boost.';
+      export BOOST_ROOT="/home/travis/boost"
+      export BOOST_INCLUDE="/home/travis/boost/include"
+      export BOOST_LIBDIR="/home/travis/boost/lib"
       ls -A $HOME/boost
-      ldconfig -n /home/travis/boost
+      #ldconfig -n /home/travis/boost
       #ldconfig -n /home/travis/boost/lib
       #ldconfig -n /home/travis/boost/include
     fi
