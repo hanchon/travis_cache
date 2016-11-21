@@ -1,10 +1,6 @@
 language: cpp
 git:
   submodules: false
-  cache:
-    ccache: true
-    directories:
-    - $HOME/protobuf
   
 matrix:
   include:
@@ -13,6 +9,10 @@ matrix:
       os: linux
       sudo: required
       dist: trusty
+      cache:
+        ccache: true
+        directories:
+          - $HOME/protobuf
       addons: &gcc5
         apt:
           packages:
