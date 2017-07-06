@@ -50,16 +50,16 @@ install:
   ############################################################################
   # Install a recent CMake
   ############################################################################
-  - |
-    if [ ! -d "$HOME/deps/cmake/bin" ]; then
-      uname -a
-      cmake --version
-      CMAKE_URL="https://cmake.org/files/v3.7/cmake-3.7.0-rc3-Linux-x86_64.tar.gz"
-      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-      echo 'Cmake 3.7.0 installed';
-    else
-      echo 'Cmake 3.7.0 already installed';
-    fi
+  #- |
+   # if [ ! -d "$HOME/deps/cmake/bin" ]; then
+   #   uname -a
+   #   cmake --version
+  - CMAKE_URL="https://cmake.org/files/v3.9/cmake-3.9.0-rc5-Linux-x86_64.tar.gz"
+  - mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+  - echo 'Cmake 3.9.0 installed';
+    #else
+    #  echo 'Cmake 3.9.0 already installed';
+    #fi
     
   - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
   ############################################################################
@@ -70,6 +70,7 @@ install:
   - tar -xzf boost.tar.gz
   - export BOOST_OPTS="-DBOOST_ROOT=/home/travis/deps/boost_1_64_0 -DBOOST_INCLUDEDIR=/home/travis/deps/boost_1_64_0 -DBOOST_LIBRARYDIR=/home/travis/deps/boost_1_64_0/stage/lib"
   - sudo ldconfig
+  - echo 'Boost 1.64.0 installed';
 
 before_script:
   ############################################################################
