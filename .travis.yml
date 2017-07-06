@@ -56,29 +56,20 @@ install:
       cmake --version
       CMAKE_URL="https://cmake.org/files/v3.7/cmake-3.7.0-rc3-Linux-x86_64.tar.gz"
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       echo 'Cmake 3.7.0 installed';
     else
       echo 'Cmake 3.7.0 already installed';
     fi
+    
+  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
   ############################################################################
   # Install a Boost with -fPIC
   ############################################################################
-  - |
-    if [ ! -d "$HOME/deps/boost/lib" ]; then
-      wget -O boost.tar.gz https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz/download
-      tar -xzf boost.tar.gz
-      cd boost_1_61_0
-      ./bootstrap.sh --prefix=$HOME/deps/boost
-      ./b2  cxxflags=-fPIC cflags=-fPIC
-      cd ..
-      echo 'Boost 1.61.0 installed';
-    else
-      echo 'Boost 1.61.0 already installed';
-    fi
-
-  -  export BOOST_OPTS="-DBOOST_ROOT=/home/travis/deps/boost -DBOOST_INCLUDEDIR=/home/travis/deps/boost/include -DBOOST_LIBRARYDIR=/home/travis/deps/boost/lib"
-  -  sudo ldconfig
+  - cd ${DEPS_DIR}
+  - wget -O boost.tar.gz http://repo.bitprim.org/packages/binary/boost_1_64_0_compiled.tar.gz
+  - tar -xzf boost.tar.gz
+  - export BOOST_OPTS="-DBOOST_ROOT=/home/travis/deps/boost_1_64_0 -DBOOST_INCLUDEDIR=/home/travis/deps/boost_1_64_0 -DBOOST_LIBRARYDIR=/home/travis/deps/boost_1_64_0/stage/lib"
+  - sudo ldconfig
 
 before_script:
   ############################################################################
