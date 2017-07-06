@@ -1,6 +1,6 @@
-# Bitprim.Server
+# Bitprim
 #
-# Copyright (c) 2016 Bitprim developers (see AUTHORS)
+# Copyright (c) 2017 Bitprim developers (see AUTHORS)
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -13,187 +13,6 @@ git:
   
 matrix:
   include:
-
-    # Linux clang-3.6 Debug
-    - env: CLANG_VERSION=3.6 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &clang36
-        apt:
-          packages:
-            - clang-3.6
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-
-    # Linux clang-3.6 Release
-    - env: CLANG_VERSION=3.6 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &clang36
-        apt:
-          packages:
-            - clang-3.6
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-
-    # Linux clang-3.7 Debug
-    - env: CLANG_VERSION=3.7 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &clang37
-        apt:
-          packages:
-            - clang-3.7
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-
-    # Linux clang-3.7 Release
-    - env: CLANG_VERSION=3.7 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &clang37
-        apt:
-          packages:
-            - clang-3.7
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-
-    # Linux clang-3.8 Debug
-    - env: CLANG_VERSION=3.8 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &clang38
-        apt:
-          packages:
-            - clang-3.8
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-
-    # Linux clang-3.8 Release
-    - env: CLANG_VERSION=3.8 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &clang38
-        apt:
-          packages:
-            - clang-3.8
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-
-    # gcc-4.9 Debug
-    - env: GCC_VERSION=4.9 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &gcc49
-        apt:
-          packages:
-            - g++-4.9
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-
-    # gcc-4.9 Release
-    - env: GCC_VERSION=4.9 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &gcc49
-        apt:
-          packages:
-            - g++-4.9
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-
-    # gcc-5
-    - env: GCC_VERSION=5 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &gcc5
-        apt:
-          packages:
-            - cmake
-            - g++-5
-          sources:
-            - ubuntu-toolchain-r-test
-
     - env: GCC_VERSION=5 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
       os: linux
       sudo: required
@@ -202,86 +21,14 @@ matrix:
         ccache: true
         timeout: 1000
         directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
+          - $HOME/deps
       addons: &gcc5
         apt:
           packages:
-            - cmake
+            #- cmake
             - g++-5
           sources:
             - ubuntu-toolchain-r-test
-            
-    # gcc-6
-    - env: GCC_VERSION=6 CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &gcc6
-        apt:
-          packages:
-            - cmake
-            - g++-6
-          sources:
-            - ubuntu-toolchain-r-test
-    
-    - env: GCC_VERSION=6 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-      os: linux
-      sudo: required
-      dist: trusty
-      cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/boost
-          - $HOME/protobuf
-          - $HOME/zeromq
-      addons: &gcc6
-        apt:
-          packages:
-            - cmake
-            - g++-6
-          sources:
-            - ubuntu-toolchain-r-test
-
-    # OSX
-
-    # Xcode 7 Debug
-#    - env: CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-#      os: osx
-#      osx_image: xcode73
-#      addons: &xcode73
-#      sudo: required
-
-    # Xcode 7 Release
-#    - env: CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-#      os: osx
-#      osx_image: xcode73
-#      addons: &xcode73
-#      sudo: required
-      
-    # Xcode 8 Release
-#    - env: CXX_FLAGS="-std=c++11" BUILD_TYPE=Debug
-#      os: osx
-#      osx_image: xcode8
-#      addons: &xcode8
-#      sudo: required
-      
-    # Xcode 8 Release
-#    - env: CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
-#      os: osx
-#      osx_image: xcode8
-#      addons: &xcode8
-#      sudo: required
-
 branches:
   only:
     - master
@@ -298,63 +45,43 @@ before_install:
 
 install:
   ############################################################################
-  # All the dependencies are installed in ${TRAVIS_BUILD_DIR}/deps/
+  # All the dependencies are installed in /home/travis/deps/
   ############################################################################
-  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - DEPS_DIR="/home/travis/deps"
   - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
 
   ############################################################################
   # Install a recent CMake
   ############################################################################
   - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+    if [ ! -d "$HOME/deps/cmake/bin" ]; then
+      uname -a
+      cmake --version
       CMAKE_URL="https://cmake.org/files/v3.7/cmake-3.7.0-rc3-Linux-x86_64.tar.gz"
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-    else 
-      brew unlink cmake
-      brew install cmake
+      echo 'Cmake 3.7.0 installed';
+    else
+      echo 'Cmake 3.7.0 already installed';
+    fi  
+  ############################################################################
+  # Install a Boost with -fPIC
+  ############################################################################
+  - |
+    if [ ! -d "$HOME/boost/lib" ]; then
+    	wget -O boost.tar.gz https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz/download
+	    tar -xzf boost.tar.gz
+	    cd boost_1_61_0
+	    ./bootstrap.sh --prefix=$HOME/boost
+      ./b2  cxxflags=-fPIC cflags=-fPIC
+	    cd ..
+	    echo 'Boost 1.61.0 installed';
+    else
+	    echo 'Boost 1.61.0 already installed';
     fi
 
-  ############################################################################
-  # Custom script for external dependences
-  ############################################################################
-  - cd ${DEPS_DIR}
-  - wget -O build_deps.sh  https://raw.githubusercontent.com/hanchon/travis_complete_cache/master/build_deps.sh
-  - sudo chmod 777 build_deps.sh  
-  # Install Boost
-  - ./build_deps.sh boost "${TRAVIS_OS_NAME}"
-  # Install ZeroMQ
-  - cd ${DEPS_DIR}
-  - ./build_deps.sh zeromq "${TRAVIS_OS_NAME}"
-  # Install Protobuf
-  - cd ${DEPS_DIR}
-  - ./build_deps.sh protobuf "${TRAVIS_OS_NAME}"
-  #Set linux variables:
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      export BOOST_OPTS="-DBOOST_ROOT=/home/travis/boost -DBOOST_INCLUDEDIR=/home/travis/boost/include -DBOOST_LIBRARYDIR=/home/travis/boost/lib"    
-      export ZEROMQ=" -DZeroMQ_ROOT_DIR=/home/travis/zeromq "  
-      export PROTOBUF=" -DProtobuf_ROOT_DIR=/home/travis/protobuf "
-      export PATH=/home/travis/protobuf/bin:${PATH}
-      sudo ldconfig
-    else
-      export BOOST_OPTS=" "    
-      export ZEROMQ=" "  
-      export PROTOBUF=" "
-    fi  
-  
-  - cd ${DEPS_DIR}
-  - git clone --recursive https://github.com/bitprim/bitprim-build/
-  - cd bitprim-build
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DWITH_TESTS=OFF -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" ${BOOST_OPTS} ${PROTOBUF} ${ZEROMQ}
-  - make -j2
-  - sudo make install
-  - sudo ldconfig
-  
-  - echo "install"
+  -  export BOOST_OPTS="-DBOOST_ROOT=/home/travis/boost -DBOOST_INCLUDEDIR=/home/travis/boost/include -DBOOST_LIBRARYDIR=/home/travis/boost/lib"    
+  -  sudo ldconfig
 
 before_script:
   ############################################################################
@@ -363,24 +90,55 @@ before_script:
   - git config --global user.name "Travis bot"
   - git config --global user.email travis-bot@travis-ci.org
 
-  - if [ -n "$GCC_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
-  - if [ -n "$CLANG_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} -Wall -Wextra"; fi
+  - if [ -n "$GCC_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} "; fi
+  - if [ -n "$CLANG_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} "; fi
 
   - cd ${TRAVIS_BUILD_DIR}
-  - mkdir build 
-  - cd build 
-  
-  - echo "before_script"
+
+  - git clone 'https://github.com/bitprim/secp256k1' -b c-api
+  - git clone 'https://github.com/bitprim/bitprim-core' -b c-api
+  - git clone 'https://github.com/bitprim/bitprim-network' -b c-api
+  - git clone 'https://github.com/bitprim/bitprim-consensus' -b c-api
+  - git clone 'https://github.com/bitprim/bitprim-database' -b c-api
+  - git clone 'https://github.com/bitprim/bitprim-blockchain' -b c-api
+  - git clone 'https://github.com/bitprim/bitprim-node' -b c-api
+  - git clone 'https://github.com/bitprim/bitprim-node-cint' 
+
+  - |
+    function build_project
+	  {
+		  cd $1
+		  mkdir build
+		  cd build
+	    cmake .. -G "Unix Makefiles" -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" ${BOOST_OPTS} -DENABLE_TESTS=OFF -DWITH_EXAMPLES=OFF -DWITH_REMOTE_DATABASE=OFF -DWITH_REMOTE_BLOCKCHAIN=OFF -DWITH_LITECOIN=OFF -DWITH_TESTS=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=Debug $2 $3 $4 $5 $6 $7 $8 
+		  make -j4
+	 	  cd ..
+	 	  cd ..
+	  }
 
 script:
+  - master="${TRAVIS_BUILD_DIR}"
+  - Dblockchain=" -Dbitprim-blockchain_DIR=$master/bitprim-blockchain/build/ "
+  - Dconsensus=" -Dbitprim-consensus_DIR=$master/bitprim-consensus/build/ "
+  - Dcore=" -Dbitprim-core_DIR=$master/bitprim-core/build/ "
+  - Dnetwork=" -Dbitprim-network_DIR=$master/bitprim-network/build/ "
+  - Dsecp=" -Dsecp256k1_DIR=$master/secp256k1/build/ "
+  - Ddatabase=" -Dbitprim-database_DIR=$master/bitprim-database/build "
+  - Dnode=" -Dbitprim-node_DIR=$master/bitprim-node/build/ "
+  - Ddatabase=" -Dbitprim-database_DIR=$master/bitprim-database/build "
 
-  #- make -j2 
-  #- sudo make install
-  - echo "script"
+  - build_project secp256k1 $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project bitprim-core $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project bitprim-network $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project bitprim-consensus $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project bitprim-database $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project bitprim-blockchain $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project bitprim-node $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project bitprim-node-cint $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase $Dnode
 
 notifications:
   email: false
   webhooks:
-    urls: https://webhooks.gitter.im/e/a19dd2b03bf676d2b622
+#    urls: https://webhooks.gitter.im/e/a19dd2b03bf676d2b622
     on_success: change
     on_failure: always
