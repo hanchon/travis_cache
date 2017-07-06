@@ -15,10 +15,10 @@ matrix:
       sudo: required
       dist: trusty
       cache:
-        ccache: true
-        timeout: 1000
-        directories:
-          - $HOME/deps
+#        ccache: true
+#        timeout: 1000
+#        directories:
+#          - $HOME/deps
       addons: &gcc5
         apt:
           packages:
