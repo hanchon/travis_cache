@@ -7,7 +7,7 @@
 language: cpp
 git:
   submodules: false
-  
+
 matrix:
   include:
     - env: GCC_VERSION=5 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
@@ -32,9 +32,9 @@ branches:
 
 before_install:
 
-  # Update submodules 
+  # Update submodules
   - git submodule update --init --recursive
-  
+
   - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
   - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
   - if [ -n "$GCC_VERSION" ]; then export CXX_FLAGS="${CXX_FLAGS} "; fi
@@ -60,24 +60,24 @@ install:
       echo 'Cmake 3.7.0 installed';
     else
       echo 'Cmake 3.7.0 already installed';
-    fi  
+    fi
   ############################################################################
   # Install a Boost with -fPIC
   ############################################################################
   - |
     if [ ! -d "$HOME/boost/lib" ]; then
-    	wget -O boost.tar.gz https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz/download
-	    tar -xzf boost.tar.gz
-	    cd boost_1_61_0
-	    ./bootstrap.sh --prefix=$HOME/boost
+      wget -O boost.tar.gz https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz/download
+      tar -xzf boost.tar.gz
+      cd boost_1_61_0
+      ./bootstrap.sh --prefix=$HOME/boost
       ./b2  cxxflags=-fPIC cflags=-fPIC
-	    cd ..
-	    echo 'Boost 1.61.0 installed';
+      cd ..
+      echo 'Boost 1.61.0 installed';
     else
-	    echo 'Boost 1.61.0 already installed';
+      echo 'Boost 1.61.0 already installed';
     fi
 
-  -  export BOOST_OPTS="-DBOOST_ROOT=/home/travis/boost -DBOOST_INCLUDEDIR=/home/travis/boost/include -DBOOST_LIBRARYDIR=/home/travis/boost/lib"    
+  -  export BOOST_OPTS="-DBOOST_ROOT=/home/travis/boost -DBOOST_INCLUDEDIR=/home/travis/boost/include -DBOOST_LIBRARYDIR=/home/travis/boost/lib"
   -  sudo ldconfig
 
 before_script:
@@ -99,19 +99,19 @@ before_script:
   - git clone 'https://github.com/bitprim/bitprim-database' -b c-api
   - git clone 'https://github.com/bitprim/bitprim-blockchain' -b c-api
   - git clone 'https://github.com/bitprim/bitprim-node' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-node-cint' 
+  - git clone 'https://github.com/bitprim/bitprim-node-cint'
 
   - |
     function build_project
-	  {
-		  cd $1
-		  mkdir build
-		  cd build
-	    cmake .. -G "Unix Makefiles" -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" ${BOOST_OPTS} -DENABLE_TESTS=OFF -DWITH_EXAMPLES=OFF -DWITH_REMOTE_DATABASE=OFF -DWITH_REMOTE_BLOCKCHAIN=OFF -DWITH_LITECOIN=OFF -DWITH_TESTS=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=Debug $2 $3 $4 $5 $6 $7 $8 
-		  make -j4
-	 	  cd ..
-	 	  cd ..
-	  }
+    {
+    cd $1
+    mkdir build
+    cd build
+    cmake .. -G "Unix Makefiles" -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" ${BOOST_OPTS} -DENABLE_TESTS=OFF -DWITH_EXAMPLES=OFF -DWITH_REMOTE_DATABASE=OFF -DWITH_REMOTE_BLOCKCHAIN=OFF -DWITH_LITECOIN=OFF -DWITH_TESTS=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=Debug $2 $3 $4 $5 $6 $7 $8
+    make -j4
+    cd ..
+    cd ..
+    }
 
 script:
   - master="${TRAVIS_BUILD_DIR}"
@@ -124,13 +124,13 @@ script:
   - Dnode=" -Dbitprim-node_DIR=$master/bitprim-node/build/ "
   - Ddatabase=" -Dbitprim-database_DIR=$master/bitprim-database/build "
 
-  - build_project secp256k1 $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
-  - build_project bitprim-core $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
-  - build_project bitprim-network $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
-  - build_project bitprim-consensus $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
-  - build_project bitprim-database $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
-  - build_project bitprim-blockchain $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
-  - build_project bitprim-node $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase 
+  - build_project secp256k1 $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
+  - build_project bitprim-core $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
+  - build_project bitprim-network $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
+  - build_project bitprim-consensus $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
+  - build_project bitprim-database $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
+  - build_project bitprim-blockchain $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
+  - build_project bitprim-node $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
   - build_project bitprim-node-cint $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase $Dnode
 
 notifications:
