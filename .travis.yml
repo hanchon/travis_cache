@@ -10,7 +10,7 @@ git:
 
 matrix:
   include:
-    - env: GCC_VERSION=5 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
+    - env: GCC_VERSION=6 CXX_FLAGS="-std=c++11" BUILD_TYPE=Release
       os: linux
       sudo: required
       dist: trusty
@@ -19,11 +19,11 @@ matrix:
 #        timeout: 1000
 #        directories:
 #          - $HOME/deps
-      addons: &gcc5
+      addons: &gcc6
         apt:
           packages:
             #- cmake
-            - g++-5
+            - g++-6
           sources:
             - ubuntu-toolchain-r-test
 branches:
