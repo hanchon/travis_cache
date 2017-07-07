@@ -75,9 +75,9 @@ install:
   
   
   ####EXTRA
-#sudo echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list
-#sudo apt-get update
-#sudo apt-get -t sid install libc6 libc6-dev libc6-dbg
+  - sudo echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list
+  - sudo apt-get update
+  - sudo apt-get -t sid install libc6 libc6-dev libc6-dbg
   - dpkg -l | grep libc6
 
 
