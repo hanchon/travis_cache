@@ -24,6 +24,7 @@ matrix:
           packages:
             #- cmake
             - g++-6
+            - libc6
           sources:
             - ubuntu-toolchain-r-test
 branches:
@@ -71,6 +72,15 @@ install:
   - export BOOST_OPTS="-DBOOST_ROOT=/home/travis/deps/boost_1_64_0 -DBOOST_INCLUDEDIR=/home/travis/deps/boost_1_64_0 -DBOOST_LIBRARYDIR=/home/travis/deps/boost_1_64_0/stage/lib"
   - sudo ldconfig
   - echo 'Boost 1.64.0 installed';
+  
+  
+  ####EXTRA
+#sudo echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list
+#sudo apt-get update
+#sudo apt-get -t sid install libc6 libc6-dev libc6-dbg
+  - dpkg -l | grep libc6
+
+
 
 before_script:
   ############################################################################
