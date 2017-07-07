@@ -68,9 +68,12 @@ install:
   # Install a Boost with -fPIC
   ############################################################################
   - cd ${DEPS_DIR}
-  - wget -O boost.tar.gz http://repo.bitprim.org/packages/binary/boost_1_64_0_compiled.tar.gz
-  - tar -xzf boost.tar.gz
-  - export BOOST_OPTS="-DBOOST_ROOT=/home/travis/deps/boost_1_64_0 -DBOOST_INCLUDEDIR=/home/travis/deps/boost_1_64_0 -DBOOST_LIBRARYDIR=/home/travis/deps/boost_1_64_0/stage/lib"
+  - wget -O boost_1_64_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.tar.gz/download
+  - tar -xzf boost_1_64_0.tar.gz
+  - cd boost_1_64_0
+  - wget -O boost_bin.tar.gz http://repo.bitprim.org/packages/binary/boost_bin.tar.gz
+  - tar -xzf boost_bin.tar.gz
+  - export BOOST_OPTS="-DBOOST_ROOT=/home/travis/deps/boost_1_64_0 -DBOOST_INCLUDEDIR=/home/travis/deps/boost_1_64_0 -DBOOST_LIBRARYDIR=/home/travis/deps/boost_1_64_0/lib"
   - sudo ldconfig
   - echo 'Boost 1.64.0 installed';
   
@@ -79,10 +82,10 @@ install:
   #- sudo echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list
   #- apt-get update
   #- apt-get -t sid install libc6 libc6-dev libc6-dbg
-  - echo "deb http://ftp.debian.org/debian sid main" | sudo tee -a /etc/apt/sources.list
-  - sudo apt-get update -qq
-  - sudo apt-get -t sid install libc6 libc6-dev libc6-dbg --allow-unauthenticated -y
-  - dpkg -l | grep libc6
+  #- echo "deb http://ftp.debian.org/debian sid main" | sudo tee -a /etc/apt/sources.list
+  #- sudo apt-get update -qq
+  #- sudo apt-get -t sid install libc6 libc6-dev libc6-dbg --allow-unauthenticated -y
+  #- dpkg -l | grep libc6
 
 
 before_script:
