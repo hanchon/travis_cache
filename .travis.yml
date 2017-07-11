@@ -77,15 +77,30 @@ install:
   - sudo ldconfig
   - echo 'Boost 1.64.0 installed';
   
-  
-  ####EXTRA
-  #- sudo echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list
-  #- apt-get update
-  #- apt-get -t sid install libc6 libc6-dev libc6-dbg
-  #- echo "deb http://ftp.debian.org/debian sid main" | sudo tee -a /etc/apt/sources.list
-  #- sudo apt-get update -qq
-  #- sudo apt-get -t sid install libc6 libc6-dev libc6-dbg --allow-unauthenticated -y
-  #- dpkg -l | grep libc6
+  ############################################################################
+  # Install ZMQ
+  ############################################################################
+  - cd ${DEPS_DIR}
+  - wget -O libzmq.tar.gz http://repo.bitprim.org/packages/binary/libzmq.tar.gz
+  - tar -xvzf libzmq.tar.gz
+  - export ZEROMQ=" -DZeroMQ_ROOT_DIR=/home/travis/deps/libzmq "  
+  - sudo ldconfig
+  - echo 'ZeroMQ 4.2 installed';
+
+  ############################################################################
+  # Install Protobuf
+  ############################################################################
+  - cd ${DEPS_DIR}
+  - wget -O protobuf.tar.gz http://repo.bitprim.org/packages/binary/protobuf.tar.gz
+  - tar -xvzf protobuf.tar.gz
+#  - export Protobuf_ROOT_DIR="/home/travis/deps/protobuf"
+#  - export Protobuf_INCLUDE_DIR="/home/travis/deps/protobuf/include"
+#  - export Protobuf_LIBRARY="/home/travis/protobuf/deps/lib"
+#  - export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/bin"
+  - export PROTOBUF=" -DProtobuf_ROOT_DIR=/home/travis/deps/protobuf "
+#  - export PATH=/home/travis/protobuf/deps/bin:${PATH}
+  - sudo ldconfig
+  - echo 'Protobuf installed';  
 
 
 before_script:
@@ -100,48 +115,27 @@ before_script:
 
   - cd ${TRAVIS_BUILD_DIR}
 
-  - git clone 'https://github.com/bitprim/secp256k1' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-core' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-network' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-consensus' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-database' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-blockchain' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-node' -b c-api
-  - git clone 'https://github.com/bitprim/bitprim-node-cint'
-
   - |
     function build_project
     {
     cd $1
     mkdir build
     cd build
-    cmake .. -G "Unix Makefiles" -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" ${BOOST_OPTS} -DENABLE_TESTS=OFF -DWITH_EXAMPLES=OFF -DWITH_REMOTE_DATABASE=OFF -DWITH_REMOTE_BLOCKCHAIN=OFF -DWITH_LITECOIN=OFF -DWITH_TESTS=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=Debug $2 $3 $4 $5 $6 $7 $8
+    cmake .. -G "Unix Makefiles" -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" ${BOOST_OPTS} ${PROTOBUF} ${ZEROMQ} -DENABLE_TESTS=OFF -DWITH_EXAMPLES=OFF -DWITH_REMOTE_DATABASE=OFF -DWITH_REMOTE_BLOCKCHAIN=OFF -DWITH_LITECOIN=OFF -DWITH_TESTS=OFF -DENABLE_MODULE_RECOVERY=ON -DWITH_TOOLS=OFF -DCMAKE_BUILD_TYPE=Debug 
     make -j4
     cd ..
     cd ..
     }
     
     
-  - master="${TRAVIS_BUILD_DIR}"
-  - Dblockchain=" -Dbitprim-blockchain_DIR=$master/bitprim-blockchain/build/ "
-  - Dconsensus=" -Dbitprim-consensus_DIR=$master/bitprim-consensus/build/ "
-  - Dcore=" -Dbitprim-core_DIR=$master/bitprim-core/build/ "
-  - Dnetwork=" -Dbitprim-network_DIR=$master/bitprim-network/build/ "
-  - Dsecp=" -Dsecp256k1_DIR=$master/secp256k1/build/ "
-  - Ddatabase=" -Dbitprim-database_DIR=$master/bitprim-database/build "
-  - Dnode=" -Dbitprim-node_DIR=$master/bitprim-node/build/ "
-  - Ddatabase=" -Dbitprim-database_DIR=$master/bitprim-database/build "
-
-  - build_project secp256k1 $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
-  - build_project bitprim-core $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
-  - build_project bitprim-network $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
-  - build_project bitprim-consensus $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
-  - build_project bitprim-database $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
-  - build_project bitprim-blockchain $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
-  - build_project bitprim-node $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase
-
 script:
-  - build_project bitprim-node-cint $Dblockchain $Dconsensus $Dcore $Dnetwork $Dsecp $Ddatabase $Dnode
+  - git clone --recursive https://github.com/bitprim/bitprim-build/
+  - cd bitprim-build
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" ${BOOST_OPTS} ${PROTOBUF} ${ZEROMQ}
+  - make -j 4
+  - sudo make install
 
 notifications:
   email: false
