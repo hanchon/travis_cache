@@ -93,12 +93,12 @@ install:
   - cd ${DEPS_DIR}
   - wget -O protobuf.tar.gz http://repo.bitprim.org/packages/binary/protobuf.tar.gz
   - tar -xvzf protobuf.tar.gz
-#  - export Protobuf_ROOT_DIR="/home/travis/deps/protobuf"
-#  - export Protobuf_INCLUDE_DIR="/home/travis/deps/protobuf/include"
-#  - export Protobuf_LIBRARY="/home/travis/protobuf/deps/lib"
-#  - export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/bin"
+  - export Protobuf_ROOT_DIR="/home/travis/deps/protobuf"
+  - export Protobuf_INCLUDE_DIR="/home/travis/deps/protobuf/src/google/protobuf/"
+  - export Protobuf_LIBRARY="/home/travis/protobuf/deps/src/.libs"
+  - export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/src/"
   - export PROTOBUF=" -DProtobuf_ROOT_DIR=/home/travis/deps/protobuf "
-#  - export PATH=/home/travis/protobuf/deps/bin:${PATH}
+  - export PATH=/home/travis/deps/protobuf/src/:${PATH}
   - sudo ldconfig
   - echo 'Protobuf installed';  
 
