@@ -93,12 +93,12 @@ install:
   - cd ${DEPS_DIR}
   - wget -O protobuf-cpp-3.1.0.tar.gz http://repo.bitprim.org/packages/binary/protobuf-cpp-3.1.0.tar.gz
   - tar -xvzf protobuf-cpp-3.1.0.tar.gz
-  - export Protobuf_ROOT_DIR="/home/travis/deps/protobuf"
-  - export Protobuf_INCLUDE_DIR="/home/travis/deps/protobuf/include/"
-  - export Protobuf_LIBRARY="/home/travis/deps/protobuf/lib/"
-  - export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/bin/"
+  #- export Protobuf_ROOT_DIR="/home/travis/deps/protobuf"
+  #- export Protobuf_INCLUDE_DIR="/home/travis/deps/protobuf/include/"
+  #- export Protobuf_LIBRARY="/home/travis/deps/protobuf/lib/"
+  #- export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/bin/"
   - export PROTOBUF=" -DProtobuf_ROOT_DIR=/home/travis/deps/protobuf "
-  - export PATH=/home/travis/deps/protobuf/bin/:${PATH}
+  #- export PATH=/home/travis/deps/protobuf/bin/:${PATH}
   - sudo ldconfig
   - echo 'Protobuf installed';  
 
