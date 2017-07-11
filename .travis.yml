@@ -98,6 +98,7 @@ install:
   #- export Protobuf_LIBRARY="/home/travis/deps/protobuf/lib/"
   #- export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/bin/"
   - export PROTOBUF=" -DProtobuf_ROOT_DIR=/home/travis/deps/protobuf "
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/travis/deps/protobuf/lib/
   #- export PATH=/home/travis/deps/protobuf/bin/:${PATH}
   - sudo ldconfig
   - echo 'Protobuf installed';  
