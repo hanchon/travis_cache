@@ -81,9 +81,9 @@ install:
   # Install ZMQ
   ############################################################################
   - cd ${DEPS_DIR}
-  - wget -O libzmq.tar.gz http://repo.bitprim.org/packages/binary/libzmq.tar.gz
-  - tar -xvzf libzmq.tar.gz
-  - export ZEROMQ=" -DZeroMQ_ROOT_DIR=/home/travis/deps/libzmq "  
+  - wget -O libzmq.tar.gz http://repo.bitprim.org/packages/binary/zeromq-4.2.0.tar.gz
+  - tar -xvzf zeromq-4.2.0.tar.gz
+  - export ZEROMQ=" -DZeroMQ_ROOT_DIR=/home/travis/deps/zeromq "  
   - sudo ldconfig
   - echo 'ZeroMQ 4.2 installed';
 
@@ -91,14 +91,14 @@ install:
   # Install Protobuf
   ############################################################################
   - cd ${DEPS_DIR}
-  - wget -O protobuf.tar.gz http://repo.bitprim.org/packages/binary/protobuf.tar.gz
-  - tar -xvzf protobuf.tar.gz
+  - wget -O protobuf.tar.gz http://repo.bitprim.org/packages/binary/protobuf-cpp-3.1.0.tar.gz
+  - tar -xvzf protobuf-cpp-3.1.0.tar.gz
   - export Protobuf_ROOT_DIR="/home/travis/deps/protobuf"
-  - export Protobuf_INCLUDE_DIR="/home/travis/deps/protobuf/src/google/protobuf/"
-  - export Protobuf_LIBRARY="/home/travis/protobuf/deps/src/.libs"
-  - export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/src/"
+  - export Protobuf_INCLUDE_DIR="/home/travis/deps/protobuf/include/"
+  - export Protobuf_LIBRARY="/home/travis/deps/protobuf/lib/"
+  - export Protobuf_PROTOC_EXECUTABLE="/home/travis/deps/protobuf/bin/"
   - export PROTOBUF=" -DProtobuf_ROOT_DIR=/home/travis/deps/protobuf "
-  - export PATH=/home/travis/deps/protobuf/src/:${PATH}
+  - export PATH=/home/travis/deps/protobuf/bin/:${PATH}
   - sudo ldconfig
   - echo 'Protobuf installed';  
 
